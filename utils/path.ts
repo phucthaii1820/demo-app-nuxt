@@ -14,5 +14,7 @@ export const pathApi = {
         login: '/login',
         register: '/signup',
     },
-
+    post: {
+        getAll: '/posts'
+    }
 }

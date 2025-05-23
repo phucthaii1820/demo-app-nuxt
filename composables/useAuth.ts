@@ -37,9 +37,7 @@ export const useAuth = () => {
                     name
                 }
             });
-            console.log('Registration response:', response)
             const user = response.data
-            console.log('User data:', user)
             const authStore = useAuthStore()
             authStore.setUser(user)
             return { success: true, data: response }
