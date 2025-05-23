@@ -60,7 +60,7 @@
         <v-btn
           type="submit"
           block
-          color="success"
+          color="primary"
           size="large"
           class="rounded-lg mb-3"
         >
@@ -68,7 +68,7 @@
         </v-btn>
 
         <div class="text-center">
-          <NuxtLink to="/login" class="text-decoration-none text-body-2">
+          <NuxtLink :to=path.auth.login class="text-decoration-none text-body-2">
             Already have an account? Sign in
           </NuxtLink>
         </div>
@@ -78,41 +78,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+  import { ref } from 'vue'
+  const { $toast } = useNuxtApp();
 
-const formRef = ref()
 
-const form = ref({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-})
+  const formRef = ref()
 
-const rules = {
-  name: [
-    (v: string) => !!v || 'Name is required.',
-    (v: string) => v.length >= 2 || 'Name must be at least 2 characters.',
-  ],
-  email: [
-    (v: string) => !!v || 'Email is required.',
-    (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid.',
-  ],
-  password: [
-    (v: string) => !!v || 'Password is required.',
-    (v: string) => v.length >= 6 || 'Password must be at least 6 characters.',
-  ],
-  confirmPassword: [
-    (v: string) => !!v || 'Confirmation is required.',
-    (v: string) => v === form.value.password || 'Passwords do not match.',
-  ],
-}
+  const form = ref({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
 
-const submit = async () => {
-  const isValid = await formRef.value?.validate()
+  const rules = {
+    name: [
+      (v: string) => !!v || 'Name is required.',
+      (v: string) => v.length >= 2 || 'Name must be at least 2 characters.',
+    ],
+    email: [
+      (v: string) => !!v || 'Email is required.',
+      (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid.',
+    ],
+    password: [
+      (v: string) => !!v || 'Password is required.',
+      (v: string) => v.length >= 6 || 'Password must be at least 6 characters.',
+    ],
+    confirmPassword: [
+      (v: string) => !!v || 'Confirmation is required.',
+      (v: string) => v === form.value.password || 'Passwords do not match.',
+    ],
+  }
 
-  if (!isValid.valid) return
+  const submit = async () => {
+    const isValid = await formRef.value?.validate()
 
-  await navigateTo('/dashboard')
-}
+    if (!isValid.valid) return
+
+    const { name, email, password } = form.value
+    const { register } = useAuth()
+    const result = await register( email, password, name)
+    if (result.success) {
+      $toast.success('Registration successful!')
+      navigateTo('/')
+    } else {
+      $toast.error(result.message || 'Registration failed. Please try again.')
+    }
+  }
 </script>

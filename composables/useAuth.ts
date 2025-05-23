@@ -8,7 +8,7 @@ export const useAuth = () => {
         const authStore = useAuthStore()
 
         try {
-            const response = await api.post('/login', {
+            const response = await api.post(pathApi.auth.login, {
                 user: {
                     email,
                     password
@@ -28,7 +28,34 @@ export const useAuth = () => {
         }
     }
 
+    const register = async (email: string, password: string, name: string) => {
+        try {
+            const response = await api.post(pathApi.auth.register, {
+                user: {
+                    email,
+                    password,
+                    name
+                }
+            });
+            console.log('Registration response:', response)
+            const user = response.data
+            console.log('User data:', user)
+            const authStore = useAuthStore()
+            authStore.setUser(user)
+            return { success: true, data: response }
+        } catch (error: any) {
+            console.error('Registration failed:', error)
+            const message = error?.data?.errors[0] || 'Registration failed'
+
+            return {
+                success: false,
+                message
+            }
+        }
+    }
+
     return {
-        login
+        login,
+        register
     }
 }

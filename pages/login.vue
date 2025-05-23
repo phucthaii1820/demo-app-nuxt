@@ -46,7 +46,7 @@
         </v-btn>
 
         <div class="text-center">
-          <NuxtLink to="/forgot-password" class="text-decoration-none text-body-2">
+          <NuxtLink :to=path.auth.forgotPassword class="text-decoration-none text-body-2">
             Forgot password?
           </NuxtLink>
         </div>

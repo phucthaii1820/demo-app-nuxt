@@ -1,15 +1,31 @@
 <template>
   <v-app-bar flat color="white" elevation="1">
     <v-container class="d-flex justify-space-between align-center">
-      <NuxtLink to="/" class="text-h6 font-weight-bold text-decoration-none text-primary">
+      <NuxtLink :to=path.home class="text-h6 font-weight-bold text-decoration-none text-primary">
         NuxtApp
       </NuxtLink>
 
       <v-row class="d-none d-md-flex" no-gutters>
-        <v-btn variant="text" to="/about" class="text-capitalize">About us</v-btn>
+        <v-btn variant="text" :to=path.about class="text-capitalize">About us</v-btn>
+      </v-row>
+      
+      <v-row class="d-none d-md-flex" no-gutters>
+        <v-text-field
+        append-inner-icon="mdi-magnify"
+        density="compact"
+        label="Search templates"
+        variant="outlined"
+        hide-details
+        single-line
+      ></v-text-field>
       </v-row>
 
-      <div class="d-flex align-center gap-2">
+      <v-row class="d-none d-md-flex" no-gutters>
+      </v-row>
+
+      
+
+      <div class="d-flex align-center gap-2 justify-end" style="min-width: 180px;">
         <template v-if="user">
           <v-menu offset-y>
             <template #activator="{ props }">
@@ -18,7 +34,7 @@
               </v-btn>
             </template>
 
-            <v-list style="min-width: 250px">
+            <v-list style="min-width: 220px">
               <v-list-item :title=user?.email disabled />
               <v-divider />
               <v-list-item to="/profile/edit" prepend-icon="mdi-pencil" title="Edit Profile" />
@@ -33,8 +49,8 @@
 
         <template v-else>
           <v-row class="d-none d-md-flex" no-gutters>
-            <v-btn to="/login" class="text-capitalize">Login</v-btn>
-            <v-btn to="/register" class="text-capitalize">Sign up</v-btn>
+            <v-btn :to=path.auth.login class="text-capitalize mx-1">Login</v-btn>
+            <v-btn :to=path.auth.register class="text-capitalize mx-1">Sign up</v-btn>
         </v-row>
         </template>
       </div>
