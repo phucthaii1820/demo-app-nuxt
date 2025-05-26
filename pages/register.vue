@@ -68,7 +68,7 @@
         </v-btn>
 
         <div class="text-center">
-          <NuxtLink :to=path.auth.login class="text-decoration-none text-body-2">
+          <NuxtLink :to=path.login class="text-decoration-none text-body-2">
             Already have an account? Sign in
           </NuxtLink>
         </div>

@@ -1,12 +1,20 @@
-export const path = {
-    auth: {
-        login: '/login',
-        register: '/register',
-        forgotPassword: '/forgot-password',
-    },
+export const publicPages = {
     home: '/',
-    profile: '/profile',
     about: '/about',
+    search: '/search',
+    login: '/login',
+    register: '/register',
+    forgotPassword: '/forgot-password',
+}
+
+export const privatePages = {
+    myPost: '/my-posts',
+    profile: '/profile',
+}
+
+export const path = {
+    ...publicPages,
+    ...privatePages
 }
 
 export const pathApi = {
@@ -15,6 +23,9 @@ export const pathApi = {
         register: '/signup',
     },
     post: {
-        getAll: '/posts'
+        getAll: '/posts',
+        getMyPosts: '/my-posts',
+        search: '/posts/search',
+        deletePost: (id: string) => `/posts/${id}`,
     }
 }

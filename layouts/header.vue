@@ -17,6 +17,8 @@
         variant="outlined"
         hide-details
         single-line
+        v-model="searchValue"
+        @keydown.enter="onSearch"
       ></v-text-field>
       </v-row>
 
@@ -37,10 +39,8 @@
             <v-list style="min-width: 220px">
               <v-list-item :title=user?.email disabled />
               <v-divider />
-              <v-list-item to="/profile/edit" prepend-icon="mdi-pencil" title="Edit Profile" />
-              <v-list-item to="/settings" prepend-icon="mdi-cog" title="Settings" />
-              <v-list-item to="/help" prepend-icon="mdi-help-circle" title="Help & FAQ" />
-              <v-list-item to="/posts/my_posts" prepend-icon="mdi-chat" title="My Posts" />
+              <v-list-item :to=path.profile prepend-icon="mdi-pencil" title="Edit Profile" />
+              <v-list-item :to=path.myPost prepend-icon="mdi-chat" title="My Posts" />
               <v-divider />
               <v-list-item @click="logout" prepend-icon="mdi-logout" title="Log out" class="text-error" />
             </v-list>
@@ -48,9 +48,9 @@
         </template>
 
         <template v-else>
-          <v-row class="d-none d-md-flex" no-gutters>
-            <v-btn :to=path.auth.login class="text-capitalize mx-1">Login</v-btn>
-            <v-btn :to=path.auth.register class="text-capitalize mx-1">Sign up</v-btn>
+          <v-row class="" no-gutters>
+            <v-btn :to=path.login class="text-capitalize mx-1">Login</v-btn>
+            <v-btn :to=path.register class="text-capitalize mx-1">Sign up</v-btn>
         </v-row>
         </template>
       </div>
@@ -66,6 +66,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 authStore.loadAuthFromCookies()
 const user = ref(authStore.user)
+const searchValue = ref<string>('');
 
 watch(
   () => route.path,
@@ -79,6 +80,10 @@ const logout = async () => {
   await authStore.logout()
   user.value = null
   navigateTo('/')
+}
+
+const onSearch = () => {
+  navigateTo(`/search?q=${searchValue.value}`)
 }
 </script>
 

@@ -41,58 +41,79 @@
         rounded="circle"
       ></v-pagination>
     </v-sheet>
-  <PostDetailDialog
+    <PostDetailDialog
     v-model="dialog"
     :post="selectedPost"
-  />
+    />
   </v-container>
 </template>
-
 <script setup lang="ts">
-  import PostDetailDialog from '~/components/posts/PostDetailDialog.vue'
+import PostDetailDialog from '~/components/posts/PostDetailDialog.vue'
 
-  const { getAllPost } = usePost();
-  const posts = ref([] as any)
-  const error = ref(null) as any
-  const loading = ref(true)
-  const total_pages = ref(0)
-  const page = ref(1)
-  const dialog = ref(false)
-  const selectedPost = ref<any>(null) 
+import { ref, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+const { searchPost } = usePost();
 
-  const fetchPosts = async (dataPage: number = 1) => {
+const route = useRoute()
+
+const query = ref(
+  Array.isArray(route.query.q) ? route.query.q[0] || '' : route.query.q || ''
+)
+const results = ref([])
+const posts = ref([] as any)
+const error = ref(null) as any
+const loading = ref(true)
+const total_pages = ref(0)
+const page = ref(1)
+const dialog = ref(false)
+const selectedPost = ref<any>(null) 
+
+const fetchPosts = async (dataPage: number = 1) => {
     loading.value = true
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    posts.value = await getAllPost(dataPage)
-    
-    total_pages.value = posts.value.meta.total_pages || 0
-  }
+    posts.value = await searchPost(query.value, dataPage)
 
-  onMounted(() => {
-    fetchPosts()
-  })
-
-  watch(posts, (newPosts) => {
-    loading.value = false
-
-    if (!newPosts.data || newPosts.data.length === 0) {
-      error.value = 'No posts found'
+    if (!posts.value.data || posts.value.data.length === 0) {
+        error.value = posts.value.message || 'No posts found'
+        loading.value = false
     } else {
-      error.value = null
+        error.value = null
+        loading.value = false
     }
-  })
 
-  watch(page, async (newPage) => {
+    total_pages.value = posts.value.meta.total_pages || 0
+}
+
+onMounted(() => {
+    fetchPosts()
+})
+
+watch(posts, (newPosts) => {
+    // loading.value = false
+})
+
+watch(() => route.query.q, (newQ) => {
+    console.log(newQ)
+    if (newQ) {
+      query.value = Array.isArray(newQ) ? newQ[0] || '' : newQ as string
+      posts.value = []
+      
+      fetchPosts()
+    } else {
+      results.value = []
+    }
+})
+
+watch(page, async (newPage) => {
     console.log('Page changed:', newPage)
     await fetchPosts(newPage)
-  })
+})
 
-  const openDialog = (post: any) => {
+const openDialog = (post: any) => {
     selectedPost.value = post
     dialog.value = true
-  }
+}
 </script>
-
 <style scoped lang="css">
 .text-truncate {
   white-space: nowrap;
