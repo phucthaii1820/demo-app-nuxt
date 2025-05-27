@@ -9,7 +9,7 @@ export const publicPages = {
 
 export const privatePages = {
     myPost: '/my-posts',
-    profile: '/profile',
+    setting: '/setting',
 }
 
 export const path = {
@@ -23,9 +23,12 @@ export const pathApi = {
         register: '/signup',
     },
     post: {
-        getAll: '/posts',
+        base: '/posts',
         getMyPosts: '/my-posts',
         search: '/posts/search',
         deletePost: (id: string) => `/posts/${id}`,
-    }
+    },
+    category: {
+        getAll: '/categories',
+    },
 }

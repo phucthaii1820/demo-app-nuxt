@@ -39,7 +39,7 @@
             <v-list style="min-width: 220px">
               <v-list-item :title=user?.email disabled />
               <v-divider />
-              <v-list-item :to=path.profile prepend-icon="mdi-pencil" title="Edit Profile" />
+              <v-list-item :to=path.setting prepend-icon="mdi-cog" title="Setting" />
               <v-list-item :to=path.myPost prepend-icon="mdi-chat" title="My Posts" />
               <v-divider />
               <v-list-item @click="logout" prepend-icon="mdi-logout" title="Log out" class="text-error" />

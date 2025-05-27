@@ -52,11 +52,28 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <EditPostDialog
+      v-model="dialogEdit"
+      :post="selectedPostEdit"
+      :categories="listCategories"
+      @update:modelValue="dialogEdit = false"
+      :fetchPosts="fetchPosts"
+    />
+    <CreatePostDialog
+      v-model="dialogCreate"
+      :categories="listCategories"
+      @update:modelValue="dialogCreate = false"
+      :fetchPosts="fetchPosts"
+    />
   </v-container>
 </template>
 
 <script setup>
+import EditPostDialog from '~/components/posts/EditPostDialog.vue'
+import CreatePostDialog from '~/components/posts/CreatePostDialog.vue'
+
 const { $toast } = useNuxtApp();
+const { getAllCategories } = useCategory()
 
 
 const posts = ref([])
@@ -65,7 +82,11 @@ const { getMyPost, deletePostbyId } = usePost()
 const total_pages = ref(0)
 const page = ref(1)
 const dialog = ref(false)
+const dialogEdit = ref(false)
+const dialogCreate = ref(false)
+const selectedPostEdit = ref(null)
 const selectedPostId = ref(null)
+const listCategories = ref([])
 
 
 const headers = [
@@ -76,12 +97,17 @@ const headers = [
   { title: '', value: 'edit', sortable: false },
 ]
 
-function editPost(item) {
-  console.log('Chỉnh sửa:', item)
+const getCategories = async () => {
+  const response = await getAllCategories()
+  if (response.success) {
+    listCategories.value = response.data
+  } else {
+    console.error('Error fetching categories:', response.error)
+  }
 }
 
 function createPost() {
-  console.log('Tạo bài viết mới')
+  dialogCreate.value = true
 }
 
 const fetchPosts = async () => {
@@ -118,7 +144,13 @@ async function handleDelete() {
   }
 }
 
+function editPost(item) {
+  selectedPostEdit.value = item
+  dialogEdit.value = true
+}
+
 onMounted(() => {
   fetchPosts()
+  getCategories()
 })
 </script>

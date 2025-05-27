@@ -5,7 +5,7 @@ const api = useApi();
 export const usePost = () => {
     const getAllPost = async (page = 1, perPage = 16) => {
         try {
-            const res = await api.get(pathApi.post.getAll + `?page=${page}&per_page=${perPage}`);
+            const res = await api.get(pathApi.post.base + `?page=${page}&per_page=${perPage}`);
             return {
                 success: true,
                 data: res.data,
@@ -75,10 +75,51 @@ export const usePost = () => {
         }
     }
 
+    const updatePostbyId = async (postId: number, postData: any) => {
+        try {
+            const res = await api.put(pathApi.post.deletePost(postId.toString()), postData);
+
+            return {
+                success: true,
+                message: 'Post updated successfully',
+                data: res.data
+            }
+        }
+        catch (error: any) {
+            console.error('Error updating post:', error);
+            const message = error?.data?.errors[0] || 'Failed to update post';
+            return {
+                success: false,
+                message
+            }
+        }
+    }
+
+    const createPost = async (postData: any) => {
+        try {
+            const res = await api.post(pathApi.post.base, postData);
+            return {
+                success: true,
+                message: 'Post created successfully',
+                data: res.data
+            }
+        }
+        catch (error: any) {
+            console.error('Error creating post:', error);
+            const message = error?.data?.errors[0] || 'Failed to create post';
+            return {
+                success: false,
+                message
+            }
+        }
+    }
+
     return {
         getAllPost,
         getMyPost,
         searchPost,
-        deletePostbyId
+        deletePostbyId,
+        updatePostbyId,
+        createPost
     }
 }
