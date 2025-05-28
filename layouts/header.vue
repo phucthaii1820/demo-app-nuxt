@@ -31,13 +31,20 @@
         <template v-if="user">
           <v-menu offset-y>
             <template #activator="{ props }">
-              <v-btn icon v-bind="props">
+              <v-btn v-bind="props">
                 <v-icon size="32">mdi-account-circle</v-icon>
               </v-btn>
             </template>
 
             <v-list style="min-width: 220px">
-              <v-list-item :title=user?.email disabled />
+              <!-- <v-list-item :title=user?.email disabled /> -->
+              
+              <v-list-item
+                prepend-avatar="https://api.dicebear.com/9.x/adventurer/svg?seed=Chase"
+                :subtitle=user?.email
+                :title=user?.name
+              ></v-list-item>
+     
               <v-divider />
               <v-list-item :to=path.setting prepend-icon="mdi-cog" title="Setting" />
               <v-list-item :to=path.myPost prepend-icon="mdi-chat" title="My Posts" />

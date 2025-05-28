@@ -31,4 +31,7 @@ export const pathApi = {
     category: {
         getAll: '/categories',
     },
+    user: {
+        profile: '/signup',
+    }
 }

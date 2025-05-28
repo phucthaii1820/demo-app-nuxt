@@ -83,7 +83,6 @@
   })
 
   watch(page, async (newPage) => {
-    console.log('Page changed:', newPage)
     await fetchPosts(newPage)
   })
 

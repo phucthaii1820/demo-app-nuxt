@@ -76,5 +76,20 @@ export const useApi = () => {
                 },
             });
         },
+
+        patch: async <T = any>(url: string, body?: any): Promise<T> => {
+            const config = useRuntimeConfig();
+            useAuthStore().loadAuthFromCookies();
+            return await $fetch(url, {
+                baseURL: config.public.API_URL,
+                method: 'PATCH',
+                body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': useAuthStore().token ? `Bearer ${useAuthStore().token}` : '',
+                },
+            });
+        },
     };
 };

@@ -93,7 +93,6 @@ watch(posts, (newPosts) => {
 })
 
 watch(() => route.query.q, (newQ) => {
-    console.log(newQ)
     if (newQ) {
       query.value = Array.isArray(newQ) ? newQ[0] || '' : newQ as string
       posts.value = []
@@ -105,7 +104,6 @@ watch(() => route.query.q, (newQ) => {
 })
 
 watch(page, async (newPage) => {
-    console.log('Page changed:', newPage)
     await fetchPosts(newPage)
 })
 
