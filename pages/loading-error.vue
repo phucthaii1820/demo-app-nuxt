@@ -21,13 +21,13 @@
       </div>
       <div class="w-50 d-flex flex-column justify-center align-center h-100 position-relative" style="background-color: #bd0f71;">
         <DotLottieVue v-if="!isError" class="position-absolute bottom-50 right-50" style="height: 400px; width: 400px;transform: translate(0%, -20%);" autoplay loop :src=loadingAnimation />
-        <DotLottieVue v-else class="position-absolute bottom-50 right-50" style="height: 200px; width: 200px;transform: translate(0%, -25%);" autoplay loop src="https://lottie.host/63d6e6fd-a2e1-4c82-9344-c6cdcc6f0d9a/x8BCHIrjGa.lottie" />
+        <DotLottieVue v-else class="position-absolute bottom-50 right-50" style="height: 200px; width: 200px;transform: translate(0%, -25%);" autoplay loop :src=loadingErrorAnimation />
 
         <p v-if="!isError" class="" style="font-size: 16px; font-weight: bold; color: white; margin-top: 180px;">Exporting Data, please wait...</p>
         <p v-else class="" style="font-size: 16px; font-weight: bold; color: white; margin-top: 180px;">Error encountered, please report to BEAR Team.</p>
 
         <p v-if="!isError" class="" style="font-size: 24px; color: white;font-weight: bold">BEAR with us while we are preparing the data.</p>
-        <v-btn v-else class="mt-4" @click="isError = false">Close tab</v-btn>
+        <v-btn v-else class="mt-4" @click="isError = false" prepend-icon="mdi-close">Close tab</v-btn>
       </div>
     </div>
   </div>
@@ -37,6 +37,7 @@
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 import logoBear from '/logo-bear.png'
 import loadingAnimation from '/loading-animation.lottie'
+import loadingErrorAnimation from '/loading-error-animation.lottie'
 
 const isError = ref(false)
 
